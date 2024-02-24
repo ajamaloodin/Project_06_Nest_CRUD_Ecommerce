@@ -1,7 +1,10 @@
 
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { NestFactory                    } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { Logger, ValidationPipe         } from '@nestjs/common';
+
+import { AppModule                      } from './app.module';
+
 import 'colors';
 
 async function bootstrap() {
@@ -21,6 +24,14 @@ async function bootstrap() {
       // },
     }), //Se pueden colocar pipes separados por ,
   );
+
+  const config = new DocumentBuilder()
+    .setTitle('Teslo RESTfull API')
+    .setDescription('Testlo Ecommerce built with NestJS')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT);
   logger.log(`Server Running on Port ${process.env.PORT}`.cyan.bold);
